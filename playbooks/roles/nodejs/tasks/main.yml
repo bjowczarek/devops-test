@@ -1,0 +1,36 @@
+---
+- name: Install the gpg key for nodejs LTS
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+
+- name: Install the nodejs LTS repos
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_8.x xenial main"
+    state: present
+    update_cache: yes
+
+- name: Install the nodejs
+  apt:
+    name: nodejs
+    state: present
+
+- name: Install the forever
+  become: yes
+  shell: npm install -g forever 
+
+- name: Copy our application to app servers
+  copy: "src=../application dest={{ nginx.approot }}"
+  
+- name: Install app dependencies defined in package.json.
+  npm: "path={{ nginx.approot }}/application"
+
+- name: Start Node.js application.
+  shell: "forever start {{ nginx.approot }}/application/index.js"
+
+- name: Run Node Js tests
+  command: "npm test"
+  args:
+    chdir:  "{{ nginx.approot }}/application/"
+ 
+  

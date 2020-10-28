@@ -1,0 +1,23 @@
+---
+- name: General Configuration
+  hosts: all
+  become: yes
+  become_method: sudo
+  vars_files:
+    - vars/all.yml
+
+  vars:
+    firewall_allowed_tcp_ports:
+      - "22"
+      - "80"
+      - "3000"
+
+  pre_tasks:
+    - name: Update apt cache if needed.
+      apt: update_cache=yes cache_valid_time=3600
+
+  
+
+
+
+  

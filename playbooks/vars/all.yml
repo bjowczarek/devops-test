@@ -1,0 +1,12 @@
+---
+vagrant_local:
+    install: '1'
+    vm: { base_box: trusty64, hostname: default, ip: 192.168.4.2, memory: '512', sharedfolder: ./, useVagrantCloud: '1', syncType: nfs }
+nginx:
+    install: '1'
+    balancer: 192.168.4.2
+    app1: 192.168.4.3
+    app2: 192.168.4.4
+    docroot: /var/www/html
+    approot: /var/www/html
+    servername: myApp
